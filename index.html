@@ -4,628 +4,470 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Toko Kain Halus Jember</title>
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Library Scanner (Ringan) -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-
     <style>
         :root {
-            --maroon: #6d1a24;
-            --maroon-dark: #47101a;
-            --gold: #c9a227;
-            --gold-light: #e6c65c;
-            --cream: #fbf7ef;
-            --white: #ffffff;
-            --text: #2b2118;
-            --gray: #8a7a68;
-            --danger: #c62828;
-            --success: #2e7d32;
-            
-            --font-head: 'Playfair Display', serif;
-            --font-body: 'Plus Jakarta Sans', sans-serif;
+            --red: #991b1b; --red-dark: #7f1d1d; --gold: #ca8a04; --gold-light: #fef08a;
+            --bg: #fffbeb; --card: #ffffff; --text: #1c1917; --muted: #78716c;
+            --font-head: 'Noto Serif SC', serif; --font-body: 'Plus Jakarta Sans', sans-serif;
         }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        body { font-family: var(--font-body); background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
-        body {
-            margin: 0; padding: 0;
-            font-family: var(--font-body);
-            background: var(--cream);
-            color: var(--text);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; /* Mencegah scroll body utama */
-        }
+        /* HEADER TENANG */
+        header { background: var(--red-dark); color: white; padding: 16px; text-align: center; flex-shrink: 0; }
+        header h1 { font-family: var(--font-head); font-size: 1.1rem; letter-spacing: 1px; }
+        header small { color: var(--gold-light); font-size: 0.7rem; opacity: 0.9; }
 
-        /* --- MOBILE LAYOUT STRUCTURE --- */
-        header {
-            background: linear-gradient(135deg, var(--maroon-dark), var(--maroon));
-            color: white;
-            padding: 15px;
-            text-align: center;
-            flex-shrink: 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            z-index: 10;
-        }
-        header h1 { font-family: var(--font-head); font-size: 1.2rem; margin: 0; letter-spacing: 0.5px; }
-        header p { font-size: 0.7rem; opacity: 0.9; margin: 4px 0 0; color: var(--gold-light); }
+        /* AREA KONTEN YANG RAPI */
+        main { flex: 1; overflow-y: auto; padding: 16px; padding-bottom: 90px; max-width: 500px; margin: 0 auto; width: 100%; }
+        
+        /* NAVIGASI BAWAH YANG SIMPEL */
+        nav { position: fixed; bottom: 0; left: 0; right: 0; background: var(--card); border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 10px 0 env(safe-area-inset-bottom); z-index: 100; }
+        .nav-btn { background: none; border: none; color: var(--muted); font-size: 0.65rem; font-weight: 600; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
+        .nav-btn span { font-size: 1.3rem; }
+        .nav-btn.active { color: var(--red); }
 
-        main {
-            flex: 1;
-            overflow-y: auto; /* Scroll hanya di konten */
-            padding: 15px;
-            padding-bottom: 80px; /* Space for nav */
-            max-width: 600px; /* Batasi lebar agar tetap terasa mobile di laptop */
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        nav {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            background: var(--white);
-            display: flex; justify-content: space-around;
-            padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
-            border-top: 1px solid rgba(0,0,0,0.05);
-            box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
-            z-index: 100;
-        }
-
-        .nav-btn {
-            background: none; border: none;
-            display: flex; flex-direction: column; align-items: center;
-            color: var(--gray); font-size: 0.65rem; font-weight: 600;
-            gap: 4px; cursor: pointer; min-width: 60px;
-        }
-        .nav-btn span { font-size: 1.4rem; transition: transform 0.2s; }
-        .nav-btn.active { color: var(--maroon); }
-        .nav-btn.active span { transform: scale(1.1); }
-
-        /* --- COMPONENTS --- */
-        .card {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 12px 20px; border-radius: 10px; font-weight: 700;
-            border: none; cursor: pointer; font-size: 0.9rem; width: 100%;
-            transition: transform 0.1s;
-        }
+        /* KARTU & TOMBOL */
+        .card { background: var(--card); border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.03); }
+        .btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px; border-radius: 10px; font-weight: 700; border: none; cursor: pointer; font-size: 0.9rem; width: 100%; transition: transform 0.1s; }
         .btn:active { transform: scale(0.98); }
-        .btn-primary { background: var(--maroon); color: white; }
-        .btn-gold { background: linear-gradient(to bottom, var(--gold), #b08d1e); color: var(--maroon-dark); }
-        .btn-outline { border: 2px solid var(--maroon); color: var(--maroon); background: transparent; }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-sm { padding: 8px 12px; font-size: 0.8rem; width: auto; }
-
-        input, select, textarea {
-            width: 100%; padding: 14px; border: 1px solid #ddd;
-            border-radius: 10px; font-family: var(--font-body); font-size: 1rem;
-            background: var(--white); margin-bottom: 10px;
-        }
+        .btn-primary { background: var(--red); color: white; }
+        .btn-gold { background: var(--gold); color: white; }
+        .btn-outline { border: 1.5px solid var(--red); color: var(--red); background: transparent; }
+        
+        input, select { width: 100%; padding: 14px; border: 1px solid #e5e5e5; border-radius: 10px; font-size: 1rem; background: var(--card); margin-bottom: 8px; font-family: var(--font-body); }
         input:focus { border-color: var(--gold); outline: none; }
 
-        .badge {
-            display: inline-block; padding: 4px 8px; border-radius: 6px;
-            font-size: 0.7rem; font-weight: bold;
-        }
-        .badge-stock { background: #e8f5e9; color: var(--success); }
-        .badge-low { background: #ffebee; color: var(--danger); }
+        /* QUICK ADD PANEL - FITUR BARU */
+        .quick-add { background: var(--red-dark); border-radius: 12px; padding: 16px; margin-bottom: 16px; color: white; }
+        .quick-add h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; color: var(--gold-light); }
+        .quick-row { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 6px; align-items: end; }
+        .quick-row input { margin: 0; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 12px 8px; font-size: 0.85rem; }
+        .quick-row input::placeholder { color: rgba(255,255,255,0.5); }
+        .quick-row button { background: var(--gold); color: white; border: none; border-radius: 10px; padding: 12px; font-weight: bold; font-size: 1.2rem; height: 48px; width: 48px; }
 
-        /* --- SCANNER UI --- */
-        #reader { width: 100%; border-radius: 10px; overflow: hidden; margin-bottom: 10px; }
-        .scan-overlay {
-            position: fixed; inset: 0; background: black; z-index: 2000;
-            display: none; flex-direction: column;
-        }
-        .scan-header { padding: 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
-        #scan-region { flex: 1; display: flex; align-items: center; justify-content: center; }
+        /* GRID PRODUK YANG RAPI */
+        .prod-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .prod-card { background: var(--card); border: 1px solid #eee; border-radius: 10px; padding: 12px; cursor: pointer; transition: all 0.2s; }
+        .prod-card:active { background: #fafafa; transform: scale(0.98); }
+        .prod-name { font-weight: 700; font-size: 0.85rem; margin-bottom: 4px; line-height: 1.2; }
+        .prod-meta { font-size: 0.7rem; color: var(--muted); }
+        .prod-price { color: var(--red); font-weight: 800; font-size: 0.9rem; margin-top: 6px; }
+        .prod-stock { font-size: 0.65rem; background: #f5f5f4; padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 4px; }
 
-        /* --- TUTORIAL STEPS --- */
-        .step { display: flex; gap: 12px; margin-bottom: 15px; }
-        .step-num { 
-            background: var(--maroon); color: white; width: 28px; height: 28px; 
-            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
-            font-weight: bold; font-size: 0.8rem; flex-shrink: 0;
-        }
-        .step-content h4 { margin: 0 0 4px; font-size: 0.9rem; }
-        .step-content p { margin: 0; font-size: 0.8rem; color: var(--gray); line-height: 1.4; }
-        .code-box { background: #f5f5f5; padding: 8px; border-radius: 6px; font-family: monospace; font-size: 0.75rem; word-break: break-all; margin-top: 5px; }
+        /* KERANJANG MENYATU DI BAWAH */
+        .cart-bar { position: fixed; bottom: 65px; left: 0; right: 0; background: white; border-top: 2px solid var(--gold); padding: 12px 16px; z-index: 90; max-width: 500px; margin: 0 auto; box-shadow: 0 -4px 20px rgba(0,0,0,0.08); display: none; }
+        .cart-bar.show { display: block; }
+        .cart-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .cart-total { font-size: 1.3rem; font-weight: 800; color: var(--red); font-family: var(--font-head); }
 
-        /* Utilities */
-        .hidden { display: none !important; }
-        .flex { display: flex; } .gap-2 { gap: 8px; } .mt-2 { margin-top: 8px; }
-        .text-center { text-align: center; }
+        /* SCANNER OVERLAY */
+        #scannerOverlay { position: fixed; inset: 0; background: black; z-index: 2000; display: none; flex-direction: column; }
+        #reader { flex: 1; display: flex; align-items: center; justify-content: center; }
+        .scan-head { padding: 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .scan-close { background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 16px; border-radius: 20px; font-weight: 600; }
+
+        /* TOAST */
+        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--red-dark); color: white; padding: 12px 24px; border-radius: 50px; z-index: 3000; opacity: 0; pointer-events: none; transition: opacity 0.3s; font-size: 0.85rem; white-space: nowrap; }
         
-        /* Toast */
-        #toast {
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--maroon-dark); color: white; padding: 12px 24px;
-            border-radius: 50px; z-index: 3000; opacity: 0; pointer-events: none;
-            transition: opacity 0.3s; font-size: 0.9rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
+        .hidden { display: none !important; }
+        .section-title { font-family: var(--font-head); color: var(--red); font-size: 1.1rem; margin-bottom: 12px; }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>TOKO KAIN HALUS</h1>
-        <p>JEMBER • EST. 2024</p>
-    </header>
+<header>
+    <h1>锦绣绸庄 · KAIN HALUS</h1>
+    <small>JEMBER · EST. 2024</small>
+</header>
 
-    <main id="app">
-        <!-- Content injected by JS -->
-    </main>
+<main id="app"></main>
 
-    <nav>
-        <button class="nav-btn active" onclick="router.go('kasir')"><span>🏠</span>Kasir</button>
-        <button class="nav-btn" onclick="router.go('katalog')"><span>🧵</span>Katalog</button>
-        <button class="nav-btn" onclick="router.go('riwayat')"><span>📜</span>Riwayat</button>
-        <button class="nav-btn" onclick="router.go('marketing')"><span>📣</span>Marketing</button>
-        <button class="nav-btn" onclick="router.go('setting')"><span>⚙️</span>Setting</button>
-    </nav>
-
-    <!-- SCANNER OVERLAY -->
-    <div id="scannerOverlay" class="scan-overlay">
-        <div class="scan-header">
-            <span style="font-weight:bold;">Scan Barcode Kain</span>
-            <button onclick="scanner.stop()" style="background:rgba(255,255,255,0.2); border:none; color:white; padding:8px 16px; border-radius:20px;">Tutup</button>
-        </div>
-        <div id="reader"></div>
-        <div style="padding:20px; color:white; text-align:center; font-size:0.8rem; opacity:0.7;">
-            Arahkan kamera ke barcode/QR code pada label kain
-        </div>
+<!-- KERANJANG MELAYANG -->
+<div id="cartBar" class="cart-bar">
+    <div class="cart-info">
+        <span id="cartCount" style="font-weight:600; font-size:0.85rem;">0 item</span>
+        <span id="cartTotal" class="cart-total">Rp0</span>
     </div>
+    <button class="btn btn-gold" onclick="actions.checkout()">💰 Bayar Sekarang</button>
+</div>
 
-    <div id="toast">Notifikasi</div>
+<nav>
+    <button class="nav-btn active" onclick="router.go('kasir')"><span>🏮</span>Kasir</button>
+    <button class="nav-btn" onclick="router.go('katalog')"><span>🧵</span>Katalog</button>
+    <button class="nav-btn" onclick="router.go('riwayat')"><span>📜</span>Riwayat</button>
+    <button class="nav-btn" onclick="router.go('setting')"><span>⚙️</span>Setting</button>
+</nav>
 
-    <script>
-        /**
-         * TOKO KAIN HALUS JEMBER - MOBILE FIRST POS
-         * Fitur: LocalStorage + Jsonbin Sync + Barcode Scanner
-         */
+<!-- SCANNER -->
+<div id="scannerOverlay">
+    <div class="scan-head">
+        <span style="font-weight:700;">Scan Barcode</span>
+        <button class="scan-close" onclick="scanner.stop()">Tutup</button>
+    </div>
+    <div id="reader"></div>
+</div>
 
-        // --- CONFIG & STATE ---
-        const STORE = { name: "TOKO KAIN HALUS JEMBER", wa: "6281336778878" };
-        const DB_KEY = 'tkhj_v2';
+<div id="toast"></div>
+
+<script>
+/**
+ * TOKO KAIN HALUS JEMBER - VERSI TENANG & EFISIEN
+ * Satuan: METER (input 50 = 50 meter)
+ * Fitur Baru: Quick Add Panel di Kasir
+ */
+
+const STORE = { name: "TOKO KAIN HALUS JEMBER", wa: "6281336778878", addr: "Jl. Dr. Wahidin No.6, Jember" };
+const DB_KEY = 'tkhj_v3_meter';
+
+let state = { products: [], transactions: [], settings: { apiKey: '', binId: '' }, cart: [] };
+
+// --- UTILS ---
+const util = {
+    rp: n => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n),
+    date: d => new Intl.DateTimeFormat('id-ID', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(d)),
+    id: () => Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+    toast: msg => { const t = document.getElementById('toast'); t.innerText = msg; t.style.opacity = 1; setTimeout(() => t.style.opacity = 0, 2000); },
+    debounce: (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); } }
+};
+
+// --- STORAGE ---
+const db = {
+    init: () => { const r = localStorage.getItem(DB_KEY); if (r) state = { ...state, ...JSON.parse(r) }; },
+    save: async () => {
+        localStorage.setItem(DB_KEY, JSON.stringify(state));
+        if (state.settings.apiKey && state.settings.binId) {
+            try {
+                await fetch(`https://api.jsonbin.io/v3/b/${state.settings.binId}`, {
+                    method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': state.settings.apiKey },
+                    body: JSON.stringify({ products: state.products, transactions: state.transactions })
+                });
+            } catch(e) {}
+        }
+    },
+    backup: () => {
+        const b = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(b);
+        a.download = `Backup_KainHalus_${new Date().toISOString().slice(0,10)}.json`; a.click();
+    }
+};
+
+// --- SCANNER ---
+const scanner = {
+    instance: null, active: false, callback: null,
+    start: (cb) => {
+        scanner.callback = cb;
+        document.getElementById('scannerOverlay').style.display = 'flex';
+        if (!scanner.instance) scanner.instance = new Html5Qrcode("reader");
+        scanner.instance.start({ facingMode: "environment" }, { fps: 10, qrbox: 250 }, 
+            (text) => { scanner.stop(); if(scanner.callback) scanner.callback(text); }, () => {}
+        ).catch(() => { alert("Gagal akses kamera"); scanner.stop(); });
+        scanner.active = true;
+    },
+    stop: () => {
+        if (scanner.instance && scanner.active) scanner.instance.stop().then(() => {
+            document.getElementById('scannerOverlay').style.display = 'none'; scanner.active = false;
+        });
+        else document.getElementById('scannerOverlay').style.display = 'none';
+    }
+};
+
+// --- UI RENDERER ---
+const ui = {
+    renderKasir: () => `
+        <!-- QUICK ADD PANEL -->
+        <div class="quick-add">
+            <h3>⚡ Mode Cepat</h3>
+            <div class="quick-row">
+                <input type="text" id="qaName" placeholder="Nama kain...">
+                <input type="number" id="qaMeter" placeholder="Meter" inputmode="decimal">
+                <input type="number" id="qaPrice" placeholder="Harga/m" inputmode="numeric">
+                <button onclick="actions.quickAdd()">+</button>
+            </div>
+        </div>
+
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <input type="search" placeholder="Cari kain..." onkeyup="actions.filterPos(this.value)" style="margin:0; flex:1;">
+            <button class="btn btn-outline" style="width:auto; padding:0 16px;" onclick="scanner.start(actions.scanKasir)">📷</button>
+        </div>
+        <div id="posList" class="prod-grid">${ui.prodCards(state.products)}</div>
+    `,
+
+    prodCards: (list) => list.map(p => `
+        <div class="prod-card" onclick="actions.addToCart('${p.id}')">
+            <div class="prod-name">${p.name}</div>
+            <div class="prod-meta">${p.category}</div>
+            <div class="prod-price">${util.rp(p.price)} /m</div>
+            <div class="prod-stock">Stok: ${p.stock} m</div>
+        </div>
+    `).join(''),
+
+    renderKatalog: () => `
+        <div style="display:flex; gap:8px; margin-bottom:12px;">
+            <button class="btn btn-primary" onclick="ui.showForm()" style="flex:1;">+ Tambah Kain</button>
+            <button class="btn btn-outline" style="width:auto; padding:0 16px;" onclick="scanner.start(actions.scanKatalog)">📷</button>
+        </div>
+        <div id="prodForm" class="card hidden">
+            <input type="hidden" id="fId">
+            <input type="text" id="fName" placeholder="Nama Kain">
+            <select id="fCat"><option>Katun</option><option>Satin</option><option>Sutra</option><option>Batik</option><option>Brokat</option><option>Lainnya</option></select>
+            <input type="number" id="fPrice" placeholder="Harga per Meter (Rp)" inputmode="numeric">
+            <input type="number" id="fStock" placeholder="Stok (Meter)" inputmode="decimal">
+            <input type="text" id="fBarcode" placeholder="Kode Barcode (opsional)">
+            <div style="display:flex; gap:8px;">
+                <button class="btn btn-primary" onclick="actions.saveProd()">Simpan</button>
+                <button class="btn btn-outline" onclick="document.getElementById('prodForm').classList.add('hidden')">Batal</button>
+            </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+            ${state.products.map(p => `
+                <div class="card" style="padding:12px; display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-weight:700; font-size:0.9rem;">${p.name}</div>
+                        <div style="font-size:0.75rem; color:var(--muted);">${p.category} • Stok: ${p.stock} m</div>
+                        <div style="color:var(--red); font-weight:800; margin-top:2px;">${util.rp(p.price)} /m</div>
+                    </div>
+                    <div style="display:flex; gap:6px;">
+                        <button style="background:#f5f5f4; border:none; padding:8px 12px; border-radius:8px; font-size:0.8rem;" onclick="ui.editProd('${p.id}')">✏️</button>
+                        <button style="background:#fee2e2; border:none; padding:8px 12px; border-radius:8px; font-size:0.8rem; color:var(--red);" onclick="actions.delProd('${p.id}')">🗑️</button>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `,
+
+    renderRiwayat: () => `
+        <div class="card" style="background:var(--red-dark); color:white; text-align:center; padding:20px;">
+            <div style="font-size:0.75rem; opacity:0.8;">TOTAL OMZET</div>
+            <div style="font-size:1.8rem; font-weight:800; color:var(--gold-light); font-family:var(--font-head); margin-top:4px;">
+                ${util.rp(state.transactions.reduce((s,t)=>s+t.total,0))}
+            </div>
+            <div style="font-size:0.7rem; margin-top:6px; opacity:0.7;">${state.transactions.length} Transaksi</div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+            ${state.transactions.slice().reverse().map(t => `
+                <div class="card" style="padding:12px; cursor:pointer;" onclick='ui.showReceipt(${JSON.stringify(t).replace(/'/g,"&#39;")})'>
+                    <div style="display:flex; justify-content:space-between;">
+                        <span style="font-weight:700; font-size:0.85rem;">${t.no}</span>
+                        <span style="color:var(--red); font-weight:800;">${util.rp(t.total)}</span>
+                    </div>
+                    <div style="font-size:0.7rem; color:var(--muted); margin-top:4px;">${util.date(t.date)} • ${t.customer||'Umum'}</div>
+                </div>
+            `).join('')}
+        </div>
+    `,
+
+    renderSetting: () => `
+        <div class="card">
+            <div class="section-title">☁️ Cloud Sync (Jsonbin)</div>
+            <p style="font-size:0.75rem; color:var(--muted); margin-bottom:12px;">Isi sekali, sync selamanya. Daftar gratis di jsonbin.io</p>
+            <input type="password" id="setKey" placeholder="API Key" value="${state.settings.apiKey}">
+            <input type="text" id="setBin" placeholder="Bin ID" value="${state.settings.binId}">
+            <button class="btn btn-primary" onclick="actions.saveCloud()">💾 Simpan Config</button>
+        </div>
+        <div class="card">
+            <div class="section-title">💾 Backup Data</div>
+            <button class="btn btn-outline" onclick="db.backup()">Download File .JSON</button>
+        </div>
+        <div class="card">
+            <div class="section-title">📍 Info Toko</div>
+            <p style="font-size:0.8rem; line-height:1.6;">${STORE.name}<br>${STORE.addr}<br>WA: ${STORE.wa}</p>
+            <a href="https://maps.google.com/?q=Jl.+Dr.+Wahidin+No.6+Jember" target="_blank" class="btn btn-outline" style="margin-top:8px;">Buka Maps</a>
+        </div>
+    `,
+
+    showForm: () => {
+        document.getElementById('prodForm').classList.remove('hidden');
+        ['fId','fName','fPrice','fStock','fBarcode'].forEach(i => document.getElementById(i).value = '');
+    },
+    editProd: id => {
+        const p = state.products.find(x=>x.id===id);
+        document.getElementById('fId').value = p.id;
+        document.getElementById('fName').value = p.name;
+        document.getElementById('fCat').value = p.category;
+        document.getElementById('fPrice').value = p.price;
+        document.getElementById('fStock').value = p.stock;
+        document.getElementById('fBarcode').value = p.barcode || '';
+        document.getElementById('prodForm').classList.remove('hidden');
+    },
+    updateCartBar: () => {
+        const bar = document.getElementById('cartBar');
+        const count = state.cart.reduce((s,c)=>s+c.qty, 0);
+        const total = state.cart.reduce((s,c)=>s+(c.price*c.qty), 0);
+        document.getElementById('cartCount').innerText = `${count} meter`;
+        document.getElementById('cartTotal').innerText = util.rp(total);
+        bar.classList.toggle('show', count > 0);
+    },
+    showReceipt: trx => {
+        const w = window.open("", "_blank");
+        w.document.write(`<html><head><title>Struk</title><style>
+            body{font-family:'Courier New',monospace;max-width:300px;margin:0 auto;padding:20px;font-size:12px;}
+            .center{text-align:center;} .line{border-bottom:1px dashed #000;margin:8px 0;}
+            .row{display:flex;justify-content:space-between;margin-bottom:3px;}
+        </style></head><body>
+            <div class="center"><b style="font-size:14px;">${STORE.name}</b><br>${STORE.addr}<br>WA: ${STORE.wa}</div>
+            <div class="line"></div>
+            <div class="row"><span>No: ${trx.no}</span></div>
+            <div class="row"><span>${util.date(trx.date)}</span></div>
+            <div class="row"><span>Pelanggan: ${trx.customer||'-'}</span></div>
+            <div class="line"></div>
+            ${trx.items.map(i => `<div class="row"><span>${i.name} (${i.qty}m)</span><span>${util.rp(i.sub)}</span></div>`).join('')}
+            <div class="line"></div>
+            <div class="row" style="font-weight:bold;font-size:14px;"><span>TOTAL</span><span>${util.rp(trx.total)}</span></div>
+            <div class="line"></div>
+            <div class="center" style="margin-top:10px;">Terima kasih! 🙏</div>
+            <script>window.print();<\/script>
+        </body></html>`);
+    }
+};
+
+// --- ACTIONS ---
+const actions = {
+    filterPos: q => {
+        const f = state.products.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));
+        document.getElementById('posList').innerHTML = ui.prodCards(f);
+    },
+    
+    // ⚡ QUICK ADD - FITUR BARU
+    quickAdd: () => {
+        const name = document.getElementById('qaName').value.trim();
+        const meter = parseFloat(document.getElementById('qaMeter').value);
+        const price = parseFloat(document.getElementById('qaPrice').value);
+        if (!name || !meter || !price) return util.toast("Lengkapi semua field!");
         
-        let state = {
-            products: [],
-            transactions: [],
-            settings: { apiKey: '', binId: '' },
-            cart: []
-        };
+        // Cek apakah ada di katalog
+        const existing = state.products.find(p => p.name.toLowerCase() === name.toLowerCase());
+        if (existing) {
+            if (existing.stock < meter) return util.toast(`Stok ${existing.name} hanya ${existing.stock}m!`);
+            const c = state.cart.find(x => x.id === existing.id);
+            if (c) c.qty += meter; else state.cart.push({ id: existing.id, name: existing.name, price: existing.price, qty: meter });
+        } else {
+            // Barang tidak ada di katalog → tambah sebagai item bebas
+            state.cart.push({ id: 'custom_' + util.id(), name: name, price: price, qty: meter });
+        }
+        
+        // Reset form
+        document.getElementById('qaName').value = '';
+        document.getElementById('qaMeter').value = '';
+        document.getElementById('qaPrice').value = '';
+        document.getElementById('qaName').focus();
+        
+        ui.updateCartBar();
+        util.toast(`✓ ${name} (${meter}m) ditambahkan`);
+    },
 
-        // --- UTILS ---
-        const util = {
-            rp: n => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n),
-            date: d => new Intl.DateTimeFormat('id-ID', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(d)),
-            id: () => Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
-            toast: msg => {
-                const t = document.getElementById('toast');
-                t.innerText = msg; t.style.opacity = 1;
-                setTimeout(() => t.style.opacity = 0, 2500);
-            },
-            debounce: (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); } }
-        };
+    addToCart: id => {
+        const p = state.products.find(x => x.id === id);
+        const c = state.cart.find(x => x.id === id);
+        // Default tambah 1 meter per klik
+        const addQty = 1;
+        if (c) {
+            if (c.qty + addQty <= p.stock) c.qty += addQty;
+            else return util.toast(`Stok maksimal ${p.stock}m!`);
+        } else {
+            if (p.stock >= addQty) state.cart.push({ id: p.id, name: p.name, price: p.price, qty: addQty });
+            else return util.toast("Stok habis!");
+        }
+        ui.updateCartBar();
+        util.toast(`+1m ${p.name}`);
+    },
 
-        // --- STORAGE ENGINE ---
-        const db = {
-            init: () => {
-                const raw = localStorage.getItem(DB_KEY);
-                if (raw) state = { ...state, ...JSON.parse(raw) };
-            },
-            save: async () => {
-                localStorage.setItem(DB_KEY, JSON.stringify(state));
-                if (state.settings.apiKey && state.settings.binId) cloud.sync();
-            },
-            backup: () => {
-                const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = `Backup_KainHalus_${new Date().toISOString().slice(0,10)}.json`;
-                a.click();
-                util.toast("Backup terunduh!");
-            },
-            restore: file => {
-                const r = new FileReader();
-                r.onload = e => {
-                    try {
-                        const d = JSON.parse(e.target.result);
-                        if(d.products && d.transactions) {
-                            state = { ...state, ...d };
-                            db.save();
-                            router.render();
-                            util.toast("Data pulih!");
-                        } else alert("File tidak valid");
-                    } catch(err) { alert("Gagal baca file"); }
-                };
-                r.readAsText(file);
+    checkout: () => {
+        if (state.cart.length === 0) return util.toast("Keranjang kosong");
+        const cust = prompt("Nama Pelanggan (kosongkan = Umum):");
+        const total = state.cart.reduce((s, c) => s + (c.price * c.qty), 0);
+        const trx = {
+            no: `TH-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
+            date: new Date().toISOString(), customer: cust || 'Umum',
+            items: state.cart.map(c => ({ name: c.name, qty: c.qty, price: c.price, sub: c.price * c.qty })),
+            total
+        };
+        // Kurangi stok hanya untuk produk katalog
+        state.cart.forEach(c => {
+            if (!c.id.startsWith('custom_')) {
+                const p = state.products.find(x => x.id === c.id);
+                if (p) p.stock = Math.max(0, parseFloat((p.stock - c.qty).toFixed(2)));
             }
+        });
+        state.transactions.push(trx);
+        state.cart = [];
+        db.save();
+        ui.updateCartBar();
+        ui.showReceipt(trx);
+        util.toast("Transaksi berhasil! 💰");
+    },
+
+    saveProd: () => {
+        const id = document.getElementById('fId').value;
+        const p = {
+            name: document.getElementById('fName').value.trim(),
+            category: document.getElementById('fCat').value,
+            price: parseFloat(document.getElementById('fPrice').value),
+            stock: parseFloat(document.getElementById('fStock').value),
+            barcode: document.getElementById('fBarcode').value.trim()
         };
+        if (!p.name || isNaN(p.price)) return util.toast("Nama & Harga wajib diisi!");
+        if (id) {
+            const idx = state.products.findIndex(x => x.id === id);
+            state.products[idx] = { ...state.products[idx], ...p };
+        } else {
+            state.products.push({ id: util.id(), ...p });
+        }
+        db.save();
+        document.getElementById('prodForm').classList.add('hidden');
+        router.render();
+        util.toast("Produk tersimpan ✓");
+    },
 
-        // --- CLOUD SYNC (JSONBIN) ---
-        const cloud = {
-            sync: util.debounce(async () => {
-                try {
-                    await fetch(`https://api.jsonbin.io/v3/b/${state.settings.binId}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json', 'X-Master-Key': state.settings.apiKey },
-                        body: JSON.stringify({ products: state.products, transactions: state.transactions })
-                    });
-                } catch(e) { console.error("Sync failed", e); }
-            }, 2000),
-            pull: async () => {
-                if(!state.settings.apiKey || !state.settings.binId) return alert("Isi API Key dulu di Setting!");
-                try {
-                    const res = await fetch(`https://api.jsonbin.io/v3/b/${state.settings.binId}/latest`, {
-                        headers: { 'X-Master-Key': state.settings.apiKey }
-                    });
-                    const data = await res.json();
-                    if(data.record) {
-                        state.products = data.record.products || [];
-                        state.transactions = data.record.transactions || [];
-                        db.save();
-                        router.render();
-                        util.toast("Data cloud berhasil ditarik!");
-                    }
-                } catch(e) { alert("Gagal tarik data. Cek koneksi/key."); }
-            }
-        };
+    delProd: id => {
+        if (confirm("Hapus kain ini?")) {
+            state.products = state.products.filter(x => x.id !== id);
+            db.save(); router.render();
+        }
+    },
 
-        // --- BARCODE SCANNER FEATURE ---
-        const scanner = {
-            html5QrCode: null,
-            isScanning: false,
-            onScan: null, // Callback function
+    saveCloud: () => {
+        state.settings.apiKey = document.getElementById('setKey').value.trim();
+        state.settings.binId = document.getElementById('setBin').value.trim();
+        db.save(); util.toast("Config cloud tersimpan ✓");
+    },
 
-            start: (callback) => {
-                scanner.onScan = callback;
-                document.getElementById('scannerOverlay').style.display = 'flex';
-                
-                if (!scanner.html5QrCode) {
-                    scanner.html5QrCode = new Html5Qrcode("reader");
-                }
+    scanKasir: code => {
+        const p = state.products.find(x => x.barcode === code || x.id === code);
+        if (p) { actions.addToCart(p.id); util.toast(`Scanned: ${p.name}`); }
+        else util.toast("Barcode tidak ditemukan");
+    },
+    scanKatalog: code => {
+        document.getElementById('fBarcode').value = code;
+        document.getElementById('prodForm').classList.remove('hidden');
+        util.toast("Barcode terisi ✓");
+    }
+};
 
-                const config = { fps: 10, qrbox: { width: 250, height: 250 } };
-                
-                scanner.html5QrCode.start(
-                    { facingMode: "environment" }, // Kamera belakang
-                    config,
-                    (decodedText) => {
-                        // Success
-                        scanner.stop();
-                        if(scanner.onScan) scanner.onScan(decodedText);
-                    },
-                    () => {} // Ignore errors during scanning
-                ).catch(err => {
-                    alert("Gagal akses kamera. Pastikan izin diberikan.");
-                    scanner.stop();
-                });
-                
-                scanner.isScanning = true;
-            },
+// --- ROUTER ---
+const router = {
+    current: 'kasir',
+    go: view => {
+        router.current = view;
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.querySelector(`.nav-btn[onclick="router.go('${view}')"]`).classList.add('active');
+        router.render();
+        document.getElementById('app').scrollTop = 0;
+    },
+    render: () => {
+        const app = document.getElementById('app');
+        switch (router.current) {
+            case 'kasir': app.innerHTML = ui.renderKasir(); ui.updateCartBar(); break;
+            case 'katalog': app.innerHTML = ui.renderKatalog(); break;
+            case 'riwayat': app.innerHTML = ui.renderRiwayat(); break;
+            case 'setting': app.innerHTML = ui.renderSetting(); break;
+        }
+    }
+};
 
-            stop: () => {
-                if (scanner.html5QrCode && scanner.isScanning) {
-                    scanner.html5QrCode.stop().then(() => {
-                        document.getElementById('scannerOverlay').style.display = 'none';
-                        scanner.isScanning = false;
-                    });
-                } else {
-                    document.getElementById('scannerOverlay').style.display = 'none';
-                }
-            }
-        };
-
-        // --- UI RENDERER ---
-        const ui = {
-            renderKasir: () => `
-                <div class="card">
-                    <div class="flex gap-2">
-                        <input type="search" placeholder="Cari kain..." onkeyup="actions.filterPos(this.value)" style="margin:0;">
-                        <button class="btn btn-outline" style="width:auto;" onclick="scanner.start(actions.handleScanKasir)">📷</button>
-                    </div>
-                </div>
-                <div id="posList" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                    ${ui.productGrid(state.products)}
-                </div>
-                <div style="position:fixed; bottom:70px; left:0; right:0; background:white; border-top:2px solid var(--gold); padding:15px; box-shadow:0 -5px 20px rgba(0,0,0,0.1); max-width:600px; margin:0 auto; z-index:50;">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="font-bold">Total Belanja</span>
-                        <span class="font-bold" style="color:var(--maroon); font-size:1.2rem;">${util.rp(state.cart.reduce((s,c)=>s+(c.price*c.qty),0))}</span>
-                    </div>
-                    <button class="btn btn-gold" onclick="actions.checkout()">💰 BAYAR (${state.cart.reduce((s,c)=>s+c.qty,0)} Item)</button>
-                </div>
-            `,
-            
-            productGrid: (list) => list.map(p => `
-                <div class="card" style="margin:0; padding:12px;" onclick="actions.addToCart('${p.id}')">
-                    <div style="font-weight:bold; font-size:0.9rem; margin-bottom:4px;">${p.name}</div>
-                    <div style="font-size:0.7rem; color:var(--gray);">${p.category}</div>
-                    <div style="color:var(--maroon); font-weight:bold; margin-top:5px;">${util.rp(p.price)}</div>
-                    <div class="badge ${p.stock<5?'badge-low':'badge-stock'}" style="margin-top:5px;">Stok: ${(p.stock*0.5).toFixed(1)}m</div>
-                </div>
-            `).join(''),
-
-            renderKatalog: () => `
-                <div class="flex gap-2 mb-3">
-                    <button class="btn btn-primary" onclick="ui.showForm()">+ Tambah Kain</button>
-                    <button class="btn btn-outline" style="width:auto;" onclick="scanner.start(actions.handleScanKatalog)">📷 Scan</button>
-                </div>
-                <div id="prodForm" class="card hidden">
-                    <h3 style="margin:0 0 10px;">Input Kain</h3>
-                    <input type="hidden" id="fId">
-                    <input type="text" id="fName" placeholder="Nama Kain">
-                    <select id="fCat"><option>Katun</option><option>Satin</option><option>Sutra</option><option>Batik</option><option>Lainnya</option></select>
-                    <input type="number" id="fPrice" placeholder="Harga / 0.5m">
-                    <input type="number" id="fStock" placeholder="Stok (0.5m)">
-                    <input type="text" id="fBarcode" placeholder="Kode Barcode (Opsional)">
-                    <div class="flex gap-2">
-                        <button class="btn btn-primary" onclick="actions.saveProd()">Simpan</button>
-                        <button class="btn btn-outline" onclick="document.getElementById('prodForm').classList.add('hidden')">Batal</button>
-                    </div>
-                </div>
-                <div style="display:flex; flex-direction:column; gap:10px;">
-                    ${state.products.map(p => `
-                        <div class="card flex justify-between items-center">
-                            <div>
-                                <div style="font-weight:bold;">${p.name}</div>
-                                <div style="font-size:0.8rem; color:var(--gray);">${p.barcode ? '📊 '+p.barcode : ''} • Stok: ${(p.stock*0.5).toFixed(1)}m</div>
-                                <div style="color:var(--maroon); font-weight:bold;">${util.rp(p.price)}</div>
-                            </div>
-                            <div class="flex gap-2">
-                                <button class="btn-sm btn-outline" onclick="ui.editProd('${p.id}')">✏️</button>
-                                <button class="btn-sm btn-danger" onclick="actions.delProd('${p.id}')">🗑️</button>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `,
-
-            renderRiwayat: () => `
-                <div class="card text-center" style="background:var(--maroon); color:white;">
-                    <div style="font-size:0.8rem; opacity:0.8;">Omzet Total</div>
-                    <div style="font-size:1.5rem; font-weight:bold; color:var(--gold-light);">${util.rp(state.transactions.reduce((s,t)=>s+t.total,0))}</div>
-                </div>
-                <div style="display:flex; flex-direction:column; gap:10px;">
-                    ${state.transactions.slice().reverse().map(t => `
-                        <div class="card" onclick="ui.showReceipt(${JSON.stringify(t).replace(/"/g, '&quot;')})">
-                            <div class="flex justify-between">
-                                <span style="font-weight:bold; font-size:0.9rem;">${t.no}</span>
-                                <span style="color:var(--maroon); font-weight:bold;">${util.rp(t.total)}</span>
-                            </div>
-                            <div style="font-size:0.75rem; color:var(--gray); margin-top:4px;">${util.date(t.date)} • ${t.customer||'Umum'}</div>
-                        </div>
-                    `).join('')}
-                </div>
-            `,
-
-            renderMarketing: () => `
-                <div class="card">
-                    <h3>📸 Generator Caption</h3>
-                    <input type="text" id="capIn" placeholder="Nama Kain...">
-                    <button class="btn btn-primary" onclick="actions.genCap()">Buat & Salin</button>
-                </div>
-                <div class="card">
-                    <h3>📍 Lokasi Toko</h3>
-                    <a href="https://maps.google.com/?q=Jl.+Dr.+Wahidin+No.6+Jember" target="_blank" class="btn btn-outline">Buka Google Maps</a>
-                </div>
-            `,
-
-            renderSetting: () => `
-                <div class="card">
-                    <h3 style="margin-bottom:15px;">☁️ Tutorial Cloud Sync (Gratis)</h3>
-                    <div class="step">
-                        <div class="step-num">1</div>
-                        <div class="step-content">
-                            <h4>Buka Jsonbin.io</h4>
-                            <p>Kunjungi <a href="https://jsonbin.io" target="_blank" style="color:var(--maroon);">jsonbin.io</a> dan daftar gratis (bisa pakai Google).</p>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <div class="step-num">2</div>
-                        <div class="step-content">
-                            <h4>Ambil API Key</h4>
-                            <p>Di dashboard, klik menu <b>"API Keys"</b> lalu salin kuncinya.</p>
-                            <div class="code-box">$2a$10$xxxxxxxxxxxx...</div>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <div class="step-num">3</div>
-                        <div class="step-content">
-                            <h4>Buat Bin Baru</h4>
-                            <p>Klik menu <b>"Bins"</b> > <b>"Create Bin"</b>. Isi sembarang (misal: {}). Klik Create. Lalu salin <b>ID Bin</b>-nya.</p>
-                            <div class="code-box">65f1a2b3c4d5e6f7...</div>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <div class="step-num">4</div>
-                        <div class="step-content">
-                            <h4>Tempel di Sini</h4>
-                            <input type="password" id="setKey" placeholder="Paste API Key" value="${state.settings.apiKey}">
-                            <input type="text" id="setBin" placeholder="Paste Bin ID" value="${state.settings.binId}">
-                            <button class="btn btn-primary mt-2" onclick="actions.saveCloud()">💾 Simpan Konfigurasi</button>
-                            <button class="btn btn-outline mt-2" onclick="cloud.pull()">⬇️ Tarik Data Cloud</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <h3>💾 Backup Manual</h3>
-                    <p style="font-size:0.8rem; color:var(--gray); margin-bottom:10px;">Download file data untuk disimpan di HP/Google Drive.</p>
-                    <button class="btn btn-outline" onclick="db.backup()">Download File .JSON</button>
-                    <div class="mt-2">
-                        <input type="file" id="restFile" accept=".json" onchange="db.restore(this.files[0])" style="font-size:0.8rem;">
-                    </div>
-                </div>
-            `,
-
-            showForm: () => {
-                document.getElementById('prodForm').classList.remove('hidden');
-                ['fId','fName','fPrice','fStock','fBarcode'].forEach(id => document.getElementById(id).value = '');
-            },
-            editProd: id => {
-                const p = state.products.find(x=>x.id===id);
-                document.getElementById('fId').value = p.id;
-                document.getElementById('fName').value = p.name;
-                document.getElementById('fCat').value = p.category;
-                document.getElementById('fPrice').value = p.price;
-                document.getElementById('fStock').value = p.stock;
-                document.getElementById('fBarcode').value = p.barcode || '';
-                document.getElementById('prodForm').classList.remove('hidden');
-            },
-            showReceipt: trx => {
-                const w = window.open("", "_blank");
-                w.document.write(`
-                    <html><head><title>Struk</title><style>body{font-family:monospace; max-width:300px; margin:0 auto; padding:20px;} .center{text-align:center;} .line{border-bottom:1px dashed #000; margin:10px 0;}</style></head>
-                    <body>
-                        <div class="center"><h3>${STORE.name}</h3><p>Jl. Dr. Wahidin No.6, Jember</p></div>
-                        <div class="line"></div>
-                        <div>No: ${trx.no}<br>Tgl: ${util.date(trx.date)}<br>Pelanggan: ${trx.customer||'-'}</div>
-                        <div class="line"></div>
-                        ${trx.items.map(i => `<div>${i.name} (x${i.qty}) <span style="float:right">${util.rp(i.sub)}</span></div>`).join('')}
-                        <div class="line"></div>
-                        <div style="font-weight:bold; font-size:1.2em;">TOTAL <span style="float:right">${util.rp(trx.total)}</span></div>
-                        <div class="line"></div>
-                        <div class="center">Terima Kasih!</div>
-                        <script>window.print();<\/script>
-                    </body></html>
-                `);
-            }
-        };
-
-        // --- ACTIONS ---
-        const actions = {
-            filterPos: q => {
-                const f = state.products.filter(p => p.name.toLowerCase().includes(q.toLowerCase()));
-                document.getElementById('posList').innerHTML = ui.productGrid(f);
-            },
-            addToCart: id => {
-                const p = state.products.find(x=>x.id===id);
-                const c = state.cart.find(x=>x.id===id);
-                if(c) { if(c.qty < p.stock) c.qty++; else util.toast("Stok habis!"); }
-                else { if(p.stock>0) state.cart.push({id:p.id, name:p.name, price:p.price, qty:1}); else util.toast("Stok habis!"); }
-                router.render(); // Re-render to update bottom bar
-            },
-            checkout: () => {
-                if(state.cart.length===0) return util.toast("Keranjang kosong");
-                const cust = prompt("Nama Pelanggan (kosongkan jika umum):");
-                const total = state.cart.reduce((s,c)=>s+(c.price*c.qty),0);
-                const trx = {
-                    no: `TH-${new Date().toISOString().slice(0,10).replace(/-/g,'')}-${Math.floor(Math.random()*1000)}`,
-                    date: new Date().toISOString(),
-                    customer: cust || 'Umum',
-                    items: state.cart.map(c => ({name:c.name, qty:c.qty, sub:c.price*c.qty})),
-                    total: total
-                };
-                // Kurangi stok
-                state.cart.forEach(c => {
-                    const p = state.products.find(x=>x.id===c.id);
-                    if(p) p.stock -= c.qty;
-                });
-                state.transactions.push(trx);
-                state.cart = [];
-                db.save();
-                ui.showReceipt(trx);
-                router.render();
-            },
-            saveProd: () => {
-                const id = document.getElementById('fId').value;
-                const p = {
-                    name: document.getElementById('fName').value,
-                    category: document.getElementById('fCat').value,
-                    price: parseFloat(document.getElementById('fPrice').value),
-                    stock: parseInt(document.getElementById('fStock').value),
-                    barcode: document.getElementById('fBarcode').value
-                };
-                if(!p.name || isNaN(p.price)) return util.toast("Data belum lengkap!");
-                
-                if(id) {
-                    const idx = state.products.findIndex(x=>x.id===id);
-                    state.products[idx] = {...state.products[idx], ...p};
-                } else {
-                    state.products.push({id: util.id(), ...p});
-                }
-                db.save();
-                document.getElementById('prodForm').classList.add('hidden');
-                router.render();
-            },
-            delProd: id => {
-                if(confirm("Hapus kain ini?")) {
-                    state.products = state.products.filter(x=>x.id!==id);
-                    db.save(); router.render();
-                }
-            },
-            saveCloud: () => {
-                state.settings.apiKey = document.getElementById('setKey').value;
-                state.settings.binId = document.getElementById('setBin').value;
-                db.save();
-                util.toast("Config Cloud Tersimpan!");
-            },
-            genCap: () => {
-                const n = document.getElementById('capIn').value;
-                if(!n) return;
-                const txt = `✨ *${n}* ✨\nKain premium kualitas terbaik.\n📍 Toko Kain Halus Jember\n📲 WA: ${STORE.wa}\n#KainJember #Jahit`;
-                navigator.clipboard.writeText(txt);
-                util.toast("Caption disalin!");
-            },
-            // Handler untuk Scanner
-            handleScanKasir: (code) => {
-                const p = state.products.find(x => x.barcode === code || x.id === code);
-                if(p) {
-                    actions.addToCart(p.id);
-                    util.toast(`Ditemukan: ${p.name}`);
-                } else {
-                    util.toast("Barcode tidak dikenali!");
-                }
-            },
-            handleScanKatalog: (code) => {
-                document.getElementById('fBarcode').value = code;
-                document.getElementById('prodForm').classList.remove('hidden');
-                util.toast("Barcode terisi otomatis");
-            }
-        };
-
-        // --- ROUTER ---
-        const router = {
-            current: 'kasir',
-            go: view => {
-                router.current = view;
-                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                document.querySelector(`.nav-btn[onclick="router.go('${view}')"]`).classList.add('active');
-                router.render();
-            },
-            render: () => {
-                const app = document.getElementById('app');
-                switch(router.current) {
-                    case 'kasir': app.innerHTML = ui.renderKasir(); break;
-                    case 'katalog': app.innerHTML = ui.renderKatalog(); break;
-                    case 'riwayat': app.innerHTML = ui.renderRiwayat(); break;
-                    case 'marketing': app.innerHTML = ui.renderMarketing(); break;
-                    case 'setting': app.innerHTML = ui.renderSetting(); break;
-                }
-                // Scroll to top
-                app.scrollTop = 0;
-            }
-        };
-
-        // Init
-        window.onload = () => {
-            db.init();
-            router.render();
-        };
-
-    </script>
+window.onload = () => { db.init(); router.render(); };
+</script>
 </body>
 </html>
